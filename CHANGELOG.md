@@ -8,4 +8,7 @@
 -Rewrite of the code  
 -Product pages from which data is retrieved is less of a hassle to find  
 
+# v1.0.0
 
+-CLI interface
+-Drastic change of UX

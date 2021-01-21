@@ -1,12 +1,13 @@
-Simple requests based program to retrieve specific data from StockX
+Simple requests CLI based program to retrieve last sales of a product from StockX
 
-# Requirements
--python installed on your computer  
--change the python file according to what product you would like to get info from (links are always in the form `https://stockx.com/api/products/name_of_your_product`)  
--you can get the name_of_your_product by analysing get requests in the Network tab of your developer tools  
--once you have it use `getPrices(link_to_your_product,'your_desired_size',number_of_sales)`
+## Requirements
 
-# Commands
+- Python 3  
+```
+pip3 install -r requirements.txt
+```
+
+## Commands
 
 ```
 git clone
@@ -20,7 +21,36 @@ cd stockx-sneakers-prices
 python main.py
 ```
 
-# TODO
+## Current features
+- [x] Ask for keywords  
+- [x] Ask for a size
+- [x] Ask for the amount of sales
+- [x] Retrieving last sales  
 
--using beautifulsoup to retrieve product only from a few keywords rather than hard-pasting it  
--making it more interactive (shell interaction) and completely automated
+
+## Upcoming features  
+- [ ] Saving them to a file  
+- [ ] improve code readability and structure
+- [ ] .csv file formatting
+- [ ] Several sizes implementation
+- [ ] Asking the user for confirmation
+- [ ] Improving terminal UX and UI  
+- [ ] Improving `README.md` file design
+- [ ] Implementing a while loop   
+- [ ] Graphs creation  
+- [ ] Linear regression on the resell price of a product  
+
+### Listening for keyword  
+
+Upon launch, you will be asked keywords, size and the number of sales.  
+Keywords have to match the product you are trying to get data from.  
+The amount of sales are the total amount of sales you want to be displayed.  
+
+### Retrieving last sales   
+
+Getting data using `Requests` python module
+
+### Saving them to a file
+
+Simple .txt format saving  
+
