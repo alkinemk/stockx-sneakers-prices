@@ -10,5 +10,13 @@
 
 # v1.0.0
 
--CLI interface
+-CLI interface (using input())
 -Drastic change of UX
+-Product pages fetched via keywords
+-Improvements of README.md file
+
+# v1.0.1
+
+-CLI interface rewrite (using argparse)
+-Major improvements (code readility, comments, code structure)
+-Possibility to save info to a file
