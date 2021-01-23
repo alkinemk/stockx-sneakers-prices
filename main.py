@@ -142,13 +142,8 @@ for uuid in uuidList:
 
 #saving info locally as a .txt file
 if booleanSave==True:
-  with open('data.txt', 'w') as fd:
+  with open('data.txt', 'a') as fd:
     fd.write(global_data)
-
-
-
-
-  
   
 
   

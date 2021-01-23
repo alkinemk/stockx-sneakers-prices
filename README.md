@@ -38,7 +38,7 @@ This will look for the 20 last sales of the Jordan 1 Mocha in size 8, 9 and 10.
 
 ## Upcoming features  
 - [ ] Luxury task condition
-- [ ] Working method to get retail price re
+- [ ] Working method to get retail price reliably 
 - [ ] Saving sales to a file (.csv format)
 - [ ] Graphs creation  
 - [ ] Linear regression on the resell price of a product  
