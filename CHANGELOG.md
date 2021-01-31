@@ -20,3 +20,8 @@
 -CLI interface rewrite (using argparse)
 -Major improvements (code readility, comments, code structure)
 -Possibility to save info to a file
+
+# v1.0.2
+
+-csv implementation
+-graphs creation

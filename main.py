@@ -1,5 +1,7 @@
 import requests 
 import argparse
+import csv
+import datetime
 
 #CLI definition
 parser = argparse.ArgumentParser(description="Retrieve last sales from StockX")
@@ -15,7 +17,7 @@ keywords = " ".join(args.keywords)
 sizes = args.sizes
 numberOfSales = args.sales[0]
 booleanSave = args.save
-global_data = ""
+global_iterable = [['Product Name','Size','Retail Price','Sale Price','Sale Date']]
 
 #get API url using keywords
 def getAPIurl():
@@ -38,13 +40,14 @@ def getAPIurl():
 
   #returning API url
   api_url = "https://stockx.com/api/products/"+url
-
+  
   return(api_url)
 
 #get uuid from StockX
 def getUuid(url,cli_size):
 
   uuidList = []
+  retailPrice = 1
 
   headers = {
     'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0',
@@ -64,6 +67,7 @@ def getUuid(url,cli_size):
     if (j['name']=="Retail Price" or j['name']=="Retail"): #need to a better method to get retail price
       retailPrice = j['value']
 
+
   #getting shoe name and its uuid
   for i in range(0,len(cli_size)):
     shoeName = str(json_content["Product"]["title"])
@@ -71,11 +75,14 @@ def getUuid(url,cli_size):
       size = json_content['Product']['children'][d]['shoeSize']
       if (size==cli_size[i]):
         uuidList += [json_content['Product']['children'][d]['uuid']]
-    
+
+
   return retailPrice,shoeName,uuidList
 
 
-def getSales(uuid,shoeName,retailPrice,cli_sales,data):
+def getSales(uuid,shoeName,retailPrice,userSales):
+
+  iterable = []
 
   headers = {
     'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0',
@@ -86,65 +93,59 @@ def getSales(uuid,shoeName,retailPrice,cli_sales,data):
   }
   
   #sales link building
-  url = 'https://stockx.com/api/products/' + str(uuid) + '/activity?state=480&currency=EUR&limit=' + str(numberOfSales) + '&page=1&sort=createdAt&order=DESC&country=FR'
-  
+  url = 'https://stockx.com/api/products/' + str(uuid) + '/activity?state=480&currency=EUR&limit=' + str(userSales) + '&page=1&sort=createdAt&order=DESC&country=FR'
+
   response = s.get(url, headers=headers)
   
   json = response.json()
   
-  #getting last payout and max number of sales (if cli_size exceeds it)
+  #getting last payout or max number of sales (if cli_size exceeds it)
+  shoeSize = int(json["ProductActivity"][0]["shoeSize"])
   lastPrice = json["ProductActivity"][0]["localAmount"]*0.88-5 #need to find the exact formula and implements luxury tax
   maxNumberOfSales = int(json["Pagination"]["total"])
   
   #printing shoe name
   print(shoeName + " " + str(json["ProductActivity"][0]["shoeSize"]))
-  data += shoeName + " " + str(json["ProductActivity"][0]["shoeSize"])
 
   #getting a readable date format
   def printPrices(i):
-    return str(json["ProductActivity"][i]["localAmount"]) + " € le "
+    return str(json["ProductActivity"][i]["localAmount"])
   
   def printDate(i):
-    date = str(json["ProductActivity"][i]["createdAt"])[0:10]
-    dd = date[8:10] + "/"
-    mm = date[5:7] + "/"
-    yy = date[0:4]
-    return dd + mm + yy + " à "
+    initial_date = str(json["ProductActivity"][i]["createdAt"])[0:10]
+    dd = int(initial_date[8:10])
+    mm = int(initial_date[5:7])
+    yy = int(initial_date[0:4])
+    temp_date = datetime.date(yy,mm,dd)
+    return temp_date
     
   def printTime(i):
     return str(json["ProductActivity"][i]["createdAt"])[11:19]
 
+
+  if (userSales > maxNumberOfSales):
+    userSales = maxNumberOfSales
+
   #print last sales with a timestamp
-  for i in range(numberOfSales-1):
-    if (numberOfSales > maxNumberOfSales):
-      print("Please enter : " + str(maxNumberOfSales) + " instead of " + str(numberOfSales))
-    else:
-      print(printPrices(i) + printDate(i) + printTime(i))
-      data += printPrices(i) + printDate(i) + printTime(i) + "\n"
-    
+  for i in range(userSales):
+      print(printPrices(i) +  "€ le " + str(printDate(i)) + " à " + printTime(i))
+      date = printDate(i)
+      iterable += [[shoeName] + [shoeSize] + [retailPrice] + [printPrices(i)] + [date]]
   
   print("Retail price : " + str(retailPrice))
-  data += "Retail price : " + str(retailPrice)
 
-  print("--> stockx payout = " + str(lastPrice))
-  data += "--> stockx payout = " + str(lastPrice)
+  print("--> stockx estimated payout = " + str(lastPrice))
   
   print("--> ROI = " + str((lastPrice-retailPrice)/retailPrice*100) +"\n")
-  data += "--> ROI = " + str((lastPrice-retailPrice)/retailPrice*100) +"\n"
   
-  return data
+  return iterable
 
 url = getAPIurl()
 retailPrice, shoeName, uuidList = getUuid(url, sizes)
 
 for uuid in uuidList:
-  global_data = getSales(uuid, shoeName, retailPrice, numberOfSales,global_data)
+  global_iterable += getSales(uuid, shoeName, retailPrice, numberOfSales)
 
-#saving info locally as a .txt file
-if booleanSave==True:
-  with open('data.txt', 'a') as fd:
-    fd.write(global_data)
-  
-
-  
-
+with open('sales.csv', 'w', newline='') as csvfile:
+  writer = csv.writer(csvfile)
+  writer.writerows(global_iterable)

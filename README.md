@@ -33,16 +33,14 @@ This will look for the 20 last sales of the Jordan 1 Mocha in size 8, 9 and 10.
 - [x] Ask for several sizes
 - [x] Ask for the amount of sales
 - [x] Retrieving last sales  
-- [x] CLI program (argparse)
-- [x] Saving sales to a file (.txt format)
+- [x] CLI UX (argparse)
+- [x] Saving data as a csv file
+- [x] Plots creation (pandas) to better vizualize sales
 
 ## Upcoming features  
-- [ ] Luxury task condition
-- [ ] Working method to get retail price reliably 
-- [ ] Saving sales to a file (.csv format)
-- [ ] Graphs creation  
-- [ ] Linear regression on the resell price of a product  
+- [ ] sklearn implementation (forecasting model)
 - [ ] tkinter GUI
+- [ ] colorway and shoe model addition as predictors
 
 ### CLI UX (argparse)
 
@@ -57,5 +55,8 @@ Getting data using `Requests` python module
 
 ### Saving them to a file
 
-Simple .txt format saving  
+Simple .csv format saving  
 
+### Plots creation
+
+Plots creation will be created grouping sales by 7-days-period and saved as a .png file
