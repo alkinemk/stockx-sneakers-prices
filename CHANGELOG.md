@@ -25,3 +25,8 @@
 
 -csv implementation
 -graphs creation
+
+# v1.0.3
+
+-code readability improvements
+-UX improvements

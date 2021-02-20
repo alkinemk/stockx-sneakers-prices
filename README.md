@@ -18,36 +18,32 @@ cd stockx-sneakers-prices
 ```
 
 ```
-python main.py --keyword your keywords --sizes your sizes --sales salesNumber --save boolean
+python3 src/scraper.py --keywords your keywords
 ```
-*Exemple*
+*Example*
 
 ```
-python main.py jordan 1 mocha --sizes 8 9 10 --sales 20 --save True
+python3 src/scraper.py jordan 1 mocha
 ```
 
-This will look for the 20 last sales of the Jordan 1 Mocha in size 8, 9 and 10.
+This will look for the 250 last sales of the Jordan 1 Mocha.
+
+By default, it will retrieve the last 250 sales but can be less if there has not been that many.
 
 ## Current features
-- [x] Ask for keywords  
-- [x] Ask for several sizes
-- [x] Ask for the amount of sales
+- [x] Ask for keywords (argparse)
 - [x] Retrieving last sales  
-- [x] CLI UX (argparse)
 - [x] Saving data as a csv file
-- [x] Plots creation (pandas) to better vizualize sales
+- [x] Dataframes creation (pandas)
+- [x] Charts creations (matplotlib)
 
 ## Upcoming features  
-- [ ] sklearn implementation (forecasting model)
-- [ ] tkinter GUI
-- [ ] colorway and shoe model addition as predictors
+- [ ] machine learning models implementation (sklearn)
+- [ ] deep learning implementation to predict prices (tensorflow)
 
 ### CLI UX (argparse)
 
-You will have to provide different arguments to make the program work, all of them are required except for the `--save` one
-Upon launch, you will be asked keywords, size and the number of sales as well as the possibility
-Keywords have to match the product you are trying to get data from.  
-The amount of sales are the total amount of sales you want to be displayed.  
+It asks the user for the keywords.
 
 ### Retrieving last sales   
 
@@ -59,4 +55,4 @@ Simple .csv format saving
 
 ### Plots creation
 
-Plots creation will be created grouping sales by 7-days-period and saved as a .png file
+Plots creation will be created grouping sales by periods (7-day or 1-month for instance) and saved as a .png file

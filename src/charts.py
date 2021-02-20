@@ -4,7 +4,7 @@ import matplotlib
 from datetime import datetime
 from matplotlib.pyplot import figure
 
-df = pd.read_csv("sales.csv")
+df = pd.read_csv("asics-gel-lyte-iii-atmos-x-solebox.csv")
 df["Sale Date"] = pd.to_datetime(df["Sale Date"])
 df.index = df["Sale Date"]
 
