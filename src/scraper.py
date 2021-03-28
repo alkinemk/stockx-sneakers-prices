@@ -81,7 +81,7 @@ def getSales(uuid,shoeName):
 
   #checking there were sales for the current size
   if json.get("ProductActivity"):
-    shoeSize = float(json["ProductActivity"][0]["shoeSize"])
+      shoeSize = str(json["ProductActivity"][0]["shoeSize"])
 
   def getPrices(i):
     return str(json["ProductActivity"][i]["localAmount"])
@@ -109,6 +109,6 @@ shoeName, uuidList, shortDescription = getUuid(url)
 for uuid in uuidList:
   global_iterable += getSales(uuid, shoeName)
 
-with open(shortDescription + '.csv','w', newline='') as csvfile:
+with open("../assets/data/" + shortDescription + '.csv','w', newline='') as csvfile:
   writer = csv.writer(csvfile)
   writer.writerows(global_iterable)
